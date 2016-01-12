@@ -8,6 +8,7 @@
     "myapifilms_token": "http://api.myapifilms.com/requestToken.do",
     "steam_api_key": "http://steamcommunity.com/dev/apikey",
     "google_custom_search": "https://github.com/SteamingMutt/DougleyBot/wiki/CSE",
+    "hypixel_api_key": "Go to mc.hypixel.net and type "/api" to get the key",
     "command_prefix": "Enter a symbol you want to use as the command prefix",
     "log_chat": false,
     "join_servers_on_startup": "Enter a instant-invite here that you want the bot to join on start-up",

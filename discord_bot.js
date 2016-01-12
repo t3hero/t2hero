@@ -9,6 +9,10 @@ var VersionChecker = require("./runtime/versioncheck");
 var Cleverbot = require('cleverbot-node');
 var cleverbot = new Cleverbot();
 
+var getJSON = require('get-json')
+
+var dateFromNum = require('date-from-num')
+
 var ChatLog = require("./runtime/logger.js").ChatLog;
 var Logger = require("./runtime/logger.js").Logger;
 
@@ -1078,6 +1082,300 @@ var commands = {
         }
       });
     }
+  },
+    "hypixel": {
+    name: "hypixel",
+    description: "The base command for Hypixel information.",
+    extendedhelp: "The base command for Hypixel information. Usage -> " + ConfigFile.command_prefix + "hypixel <last/info/foo>",
+    process: function(bot, msg, suffix) {    
+	
+	if (suffix.substring(0,4) === "last"){
+	
+			var hyName = suffix.substring(5);
+			
+					if (hyName.length > 0) {
+					
+			getJSON('https://api.hypixel.net/player?key=' + ConfigFile.hypixel_api_key + '&name=' + hyName, function(error, response){
+
+		 
+					if(error) {
+						bot.sendMessage(msg.channel, error);
+					}
+					else {
+						
+						if (response.success === true){
+							
+		//					hypixelID = response.player._id
+							hypixelLastDate = response.player.lastLogin
+							
+							bot.sendMessage(msg.channel, "**Hypixel:** " + hyName + "'s last login was @ `" + dateFromNum(hypixelLastDate)+ "`");
+						}
+						else {
+							bot.sendMessage(msg.channel, "**Hypixel:** " + "That user has never joined Hypixel!");
+		//					bot.sendFile(msg.channel, "./images/aintfoundshit.gif");
+						}
+					}
+					})	
+				}
+				else {
+				bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel last <Username>");
+				}
+	}
+	if (suffix.substring(0,4) === "info"){
+		
+		var hyName = suffix.substring(5);
+		
+		if (hyName.length > 0) {
+		
+		getJSON('https://api.hypixel.net/player?key=' + ConfigFile.hypixel_api_key + '&name=' + hyName, function(error, response){
+		
+					if(error) {
+						bot.sendMessage(msg.channel, error);
+					}
+					else {
+						
+						
+						if (response.success != false && response.player != null){
+							
+							    var msgHypixelArray = [];
+//								var hypixelCoinsTotal = (response.player.stats.Arcade.coins + response.player.stats.MCGO.coins + response.player.stats.TNTGames.coins + response.player.stats.Battleground.coins + response.player.stats.Walls3.coins + response.player.stats.SkyWars.coins + response.player.stats.Paintball.coins + response.player.stats.HungerGames.coins + response.player.stats.Arena.coins + response.player.stats.Quake.coins + response.player.stats.VampireZ.coins + response.player.stats.UHC.coins + response.player.stats.Walls.coins + response.player.stats.TrueCombat.coins)  
+								var Hypixelsomefuckingthing = false
+								
+							if (response.player.prefix != null) {
+								
+								hyPrefix = response.player.prefix
+								
+								msgHypixelArray.push("**Hypixel** âžœ Info report for **" + hyPrefix.substring(2) + "** " + response.player.displayname);
+								
+							}
+							else {
+								
+								if (response.player.rank != null) {
+								
+									hyPrefix = response.player.rank
+								
+									msgHypixelArray.push("**Hypixel** âžœ Info report for **[" + hyPrefix + "]** " + response.player.displayname);
+								
+								
+								}
+								
+								else {
+									
+									if (response.player.newPackageRank != null) {
+										
+										if (response.player.newPackageRank === "MVP") {
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** " + response.player.displayname);																
+										} 
+										if (response.player.newPackageRank === "MVP_PLUS") {
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** " + response.player.displayname);
+										}
+										if (response.player.newPackageRank === "VIP") {
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** " + response.player.displayname);
+										} 
+										if (response.player.newPackageRank === "VIP_PLUS") {
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** " + response.player.displayname);											
+										}
+										
+										
+									}
+									else {
+										
+										if (response.player.packageRank != null) {
+									
+											if (response.player.packageRank === "MVP") {
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** " + response.player.displayname);																
+											} 
+											if (response.player.packageRank === "MVP_PLUS") {
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** " + response.player.displayname);
+											}
+											if (response.player.packageRank === "VIP") {
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** " + response.player.displayname);
+											} 
+											if (response.player.packageRank === "VIP_PLUS") {
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** " + response.player.displayname);											
+											} 
+											
+										
+										}
+										
+										else {
+											
+											msgHypixelArray.push("**Hypixel** âžœ Info report for " + response.player.displayname);
+											
+										}
+										
+														
+									}
+								}
+							}
+							msgHypixelArray.push("=//=========================//=");
+							msgHypixelArray.push("Last login was @ `" + dateFromNum(response.player.lastLogin)+ "` with the Minecraft version `" + response.player.mcVersionRp + "`");
+							if (response.player.mostRecentGameType != undefined){
+							msgHypixelArray.push("Last played game: `" + response.player.mostRecentGameType + "`"); }
+							msgHypixelArray.push("Network level is `" + response.player.networkLevel + "` with total xp `" + response.player.networkExp + "` and total karma of `" + response.player.karma + "`");
+							msgHypixelArray.push("Total Hypixel Credits of `" + response.player.vanityTokens + "` (Its the cosmetics currency)");
+							msgHypixelArray.push("First Login: `" + dateFromNum(response.player.firstLogin) + "`");
+							if (response.player.currentGadget != undefined){
+							msgHypixelArray.push("Currently equiped gadget: `" + response.player.currentGadget + "`"); }
+							msgHypixelArray.push("Hypixel Profile : https://hypixel.net/player/" + response.player.playername);
+							msgHypixelArray.push("Plancke Profile : http://plancke.nl/hypixel/stats/" + response.player.playername);
+//							if (response.player.voting.total != null){
+//							msgHypixelArray.push("Total number of votes: `" + response.player.voting.total + "`. Total today: `" + response.player.voting.votesToday + "/2`.");
+//							msgHypixelArray.push("Last time voted: `" + dateFromNum(response.player.voting.last_vote) + "`" ); }
+							
+							bot.sendMessage(msg.channel, msgHypixelArray)
+						}
+						else {
+							bot.sendMessage(msg.channel, "**Hypixel:** " + "That user has never joined Hypixel!");
+						//    bot.sendFile(msg.channel, "./images/aintfoundshit.gif");
+						}
+					}
+		
+		})
+		}
+		else {
+		bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel info <Username>");
+		}
+	}
+	if (suffix.substring(0,3) === "foo"){
+					
+			getJSON('https://api.hypixel.net/key?key=' + ConfigFile.hypixel_api_key, function(error, response){
+
+		 
+				var hyName;
+		 
+					if(error) {
+						bot.sendMessage(msg.channel, error);
+					}
+					else {
+						
+						if (response.success === true){
+							
+							bot.sendMessage(msg.channel, "**Hypixel:** Total number of queries for this key: `" + response.record.totalQueries + "`");
+						}
+						else {
+							bot.sendMessage(msg.channel, "**Hypixel:** " + "Something went wrong on Hypixel's end. Result: " + response);
+						}
+					}
+					})	
+	}
+	if (suffix.substring(0,4) === "rank"){
+		
+			var hyName = suffix.substring(5);
+		
+			if (hyName.length > 0) {
+					
+			getJSON('https://api.hypixel.net/player?key=' + ConfigFile.hypixel_api_key + '&name=' + hyName, function(error, response){
+
+		 
+				var hyName;
+				var msgHypixelArray = [];
+				
+					if(error) {
+						bot.sendMessage(msg.channel, error);
+					}
+					else {
+						
+						if (response.success === true && response.player != null){
+							
+							if (response.player.prefix != null) {
+								
+								hyPrefix = response.player.prefix
+								
+								msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **" +  hyPrefix.substring(2) + "**");
+								
+								bot.sendMessage(msg.channel, msgHypixelArray);
+								
+							}
+							else {
+								
+								if (response.player.rank != null) {
+								
+									hyPrefix = response.player.rank
+								
+									msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[" +  hyPrefix + "]**");
+								
+									bot.sendMessage(msg.channel, msgHypixelArray);	
+								
+								}
+								
+								else {
+									
+									if (response.player.newPackageRank != null) {
+										
+										if (response.player.newPackageRank === "MVP") {
+											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP]**");																
+										} 
+										if (response.player.newPackageRank === "MVP_PLUS") {
+											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP+]**");
+										}
+										if (response.player.newPackageRank === "VIP") {
+											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP]**");
+										} 
+										if (response.player.newPackageRank === "VIP_PLUS") {
+											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP+]**");											
+										}
+										
+										bot.sendMessage(msg.channel, msgHypixelArray);
+										
+									}
+									else {
+										
+										if (response.player.packageRank != null) {
+									
+											if (response.player.packageRank === "MVP") {
+												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP]**");																
+											} 
+											if (response.player.packageRank === "MVP_PLUS") {
+												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP+]**");
+											}
+											if (response.player.packageRank === "VIP") {
+												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP]**");
+											} 
+											if (response.player.packageRank === "VIP_PLUS") {
+												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP+]**");											
+											} 
+											
+											bot.sendMessage(msg.channel, msgHypixelArray);
+										
+										}
+										
+										else {
+											
+											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + " does not have any rank.");
+											
+											bot.sendMessage(msg.channel, msgHypixelArray);
+											
+										}
+										
+														
+									}
+								}
+							}
+							
+						}
+						else {
+							msgHypixelArray.push("**Hypixel:** " + "Sorry! That player has never joined Hypixel before."); 
+							
+							bot.sendMessage(msg.channel, msgHypixelArray);
+						}
+					}
+					
+					
+					})	
+			}
+			else {
+				bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel rank <Username>");
+			}
+	}
+	
+	
+	else {
+//		bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel <somethingt3willformatthisbetterlater>"); 
+	}
+	 
+	}
+	 
   },
   "alias": {
     name: "alias",

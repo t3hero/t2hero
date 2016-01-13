@@ -31,6 +31,7 @@
     "tumblr.js": "0.0.x",
     "underscore": "1.8.x",
     "wikijs": "*",
+    "wolfram": "*",
     "winston": "1.0.x",
     "yahoo-finance": "*",
     "youtube-node": "1.2.x"

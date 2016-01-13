@@ -1152,7 +1152,7 @@ var commands = {
 								
 								hyPrefix = response.player.prefix
 								
-								msgHypixelArray.push("**Hypixel** âžœ Info report for **" + hyPrefix.substring(2) + "** " + response.player.displayname);
+								msgHypixelArray.push("**Hypixel** âžœ Info report for **" + hyPrefix.substring(2) + "** `" + response.player.displayname + "`");
 								
 							}
 							else {
@@ -1161,7 +1161,7 @@ var commands = {
 								
 									hyPrefix = response.player.rank
 								
-									msgHypixelArray.push("**Hypixel** âžœ Info report for **[" + hyPrefix + "]** " + response.player.displayname);
+									msgHypixelArray.push("**Hypixel** âžœ Info report for **[" + hyPrefix + "]** `" + response.player.displayname) + "`";
 								
 								
 								}
@@ -1171,16 +1171,16 @@ var commands = {
 									if (response.player.newPackageRank != null) {
 										
 										if (response.player.newPackageRank === "MVP") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** " + response.player.displayname);																
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** `" + response.player.displayname + "`");																
 										} 
 										if (response.player.newPackageRank === "MVP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** " + response.player.displayname);
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** `" + response.player.displayname + "`");
 										}
 										if (response.player.newPackageRank === "VIP") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** " + response.player.displayname);
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** `" + response.player.displayname + "`");
 										} 
 										if (response.player.newPackageRank === "VIP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** " + response.player.displayname);											
+											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** `" + response.player.displayname + "`");											
 										}
 										
 										
@@ -1190,16 +1190,16 @@ var commands = {
 										if (response.player.packageRank != null) {
 									
 											if (response.player.packageRank === "MVP") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** " + response.player.displayname);																
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** `" + response.player.displayname + "`");																
 											} 
 											if (response.player.packageRank === "MVP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** " + response.player.displayname);
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** `" + response.player.displayname + "`");
 											}
 											if (response.player.packageRank === "VIP") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** " + response.player.displayname);
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** `" + response.player.displayname + "`");
 											} 
 											if (response.player.packageRank === "VIP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** " + response.player.displayname);											
+												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** `" + response.player.displayname + "`");											
 											} 
 											
 										
@@ -1207,7 +1207,7 @@ var commands = {
 										
 										else {
 											
-											msgHypixelArray.push("**Hypixel** âžœ Info report for " + response.player.displayname);
+											msgHypixelArray.push("**Hypixel** âžœ Info report for `" + response.player.displayname + "`");
 											
 										}
 										
@@ -1289,7 +1289,7 @@ var commands = {
 								
 								hyPrefix = response.player.prefix
 								
-								msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **" +  hyPrefix.substring(2) + "**");
+								msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **" +  hyPrefix.substring(2) + "**");
 								
 								bot.sendMessage(msg.channel, msgHypixelArray);
 								
@@ -1300,7 +1300,7 @@ var commands = {
 								
 									hyPrefix = response.player.rank
 								
-									msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[" +  hyPrefix + "]**");
+									msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[" +  hyPrefix + "]**");
 								
 									bot.sendMessage(msg.channel, msgHypixelArray);	
 								
@@ -1311,16 +1311,16 @@ var commands = {
 									if (response.player.newPackageRank != null) {
 										
 										if (response.player.newPackageRank === "MVP") {
-											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP]**");																
+											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
 										} 
 										if (response.player.newPackageRank === "MVP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP+]**");
+											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
 										}
 										if (response.player.newPackageRank === "VIP") {
-											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP]**");
+											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP]**");
 										} 
 										if (response.player.newPackageRank === "VIP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP+]**");											
+											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
 										}
 										
 										bot.sendMessage(msg.channel, msgHypixelArray);
@@ -1331,16 +1331,16 @@ var commands = {
 										if (response.player.packageRank != null) {
 									
 											if (response.player.packageRank === "MVP") {
-												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP]**");																
+												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
 											} 
 											if (response.player.packageRank === "MVP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[MVP+]**");
+												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
 											}
 											if (response.player.packageRank === "VIP") {
-												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP]**");
+												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP]**");
 											} 
 											if (response.player.packageRank === "VIP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + "'s Rank is **[VIP+]**");											
+												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
 											} 
 											
 											bot.sendMessage(msg.channel, msgHypixelArray);
@@ -1349,7 +1349,7 @@ var commands = {
 										
 										else {
 											
-											msgHypixelArray.push("**Hypixel** âžœ " + response.player.displayname + " does not have any rank.");
+											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "` does not have any rank.");
 											
 											bot.sendMessage(msg.channel, msgHypixelArray);
 											

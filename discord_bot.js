@@ -51,6 +51,13 @@ var config = {
 
 var meme = require("./runtime/memes.json");
 
+try {
+	var wa = require("./runtime/wolfram_plugin");
+	var wolfram_plugin = new wa();
+} catch(e){
+	console.log("couldn't load wolfram plugin!\n"+e.stack);
+}
+
 var game_abbreviations = require("./runtime/abbreviations.json");
 
 var cmdLastExecutedTime = {};
@@ -1415,6 +1422,18 @@ var commands = {
 	
    }
   },
+  "wolfram": {
+   name: "wolfram",
+   description: "Searches Wolfram Alpha.",
+   usage: "<search terms>",
+   description: "gives results from wolframalpha using search terms",
+   process: function(bot,msg,suffix){
+	if(!suffix){
+		bot.sendMessage(msg.channel,"Usage: !wolfram <search terms> (Ex. !wolfram integrate 4x)");
+	}
+	  wolfram_plugin.respond(suffix,msg.channel,bot);
+       		}
+	},
   "alias": {
     name: "alias",
     description: "Creates command aliases. Useful for making simple commands on the fly",

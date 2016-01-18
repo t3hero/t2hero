@@ -1219,7 +1219,7 @@ var commands = {
 							msgHypixelArray.push("Last login was @ `" + dateFromNum(response.player.lastLogin)+ "` with the Minecraft version `" + response.player.mcVersionRp + "`");
 							if (response.player.mostRecentGameType != undefined){
 							msgHypixelArray.push("Last played game: `" + response.player.mostRecentGameType + "`"); }
-							msgHypixelArray.push("Network level is `" + response.player.networkLevel + "` with total xp `" + response.player.networkExp + "` and total karma of `" + response.player.karma + "`");
+							msgHypixelArray.push("Network level is `" + (response.player.networkLevel + 1) + "` with total xp `" + response.player.networkExp + "` and total karma of `" + response.player.karma + "`");
 							msgHypixelArray.push("Total Hypixel Credits of `" + response.player.vanityTokens + "` (Its the cosmetics currency)");
 							msgHypixelArray.push("First Login: `" + dateFromNum(response.player.firstLogin) + "`");
 							if (response.player.currentGadget != undefined){

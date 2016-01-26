@@ -12,6 +12,7 @@ var cleverbot = new Cleverbot();
 var getJSON = require('get-json')
 
 var dateFromNum = require('date-from-num')
+var ms = require('ms')
 
 var ChatLog = require("./runtime/logger.js").ChatLog;
 var Logger = require("./runtime/logger.js").Logger;
@@ -1093,8 +1094,28 @@ var commands = {
     "hypixel": {
     name: "hypixel",
     description: "The base command for Hypixel information.",
-    extendedhelp: "The base command for Hypixel information. Usage -> " + ConfigFile.command_prefix + "hypixel <last/info/foo>",
+    extendedhelp: "The base command for Hypixel information. Usage -> " + ConfigFile.command_prefix + "hypixel <rank/info/last/vote> <Username>",
     process: function(bot, msg, suffix) {    
+	
+	function returnGameName(thingName){
+		if (thingName === "SKYWARS") {return "SkyWars"}
+		else if (thingName === "QUAKECRAFT"){return "Quakecraft"}
+		else if (thingName === "WALLS"){return "Walls"}
+		else if (thingName === "PAINTBALL"){return "Paintball"}
+		else if (thingName === "SURVIVAL_GAMES"){return "Blitz Survival Games"}
+		else if (thingName === "TNTGAMES"){return "The TNT Games"}
+		else if (thingName === "VAMPIREZ"){return "VampireZ"}
+		else if (thingName === "WALLS3"){return "Mega Walls"}
+		else if (thingName === "ARCADE"){return "Arcade"}
+		else if (thingName === "ARENA"){return "Arena Brawl"}
+		else if (thingName === "MCGO"){return "Cops and Crims"}
+		else if (thingName === "UHC"){return "UHC Champions"}
+		else if (thingName === "BATTLEGROUND"){return "Warlords"}
+		else if (thingName === "SUPER_SMASH"){return "Smash Heroes"}
+		else if (thingName === "GINGERBREAD"){return "Turbo Kart Racers"}
+		else if (thingName === "TRUECOMBAT"){return "Crazy Walls"}
+		else {return "Unidentified"}	
+	}
 	
 	if (suffix.substring(0,4) === "last"){
 	
@@ -1110,25 +1131,35 @@ var commands = {
 					}
 					else {
 						
-						if (response.success === true){
+						if (response.success != false && response.player != null){
 							
-		//					hypixelID = response.player._id
-							hypixelLastDate = response.player.lastLogin
+							var msgHypixelArray = [];
+							var hypixelLastDate = response.player.lastLogin							
+							var currentDate = Date.now()							
+							var hypixelTimeDiffrence = (currentDate - hypixelLastDate)
 							
-							bot.sendMessage(msg.channel, "**Hypixel:** " + hyName + "'s last login was @ `" + dateFromNum(hypixelLastDate)+ "`");
+							msgHypixelArray.push("**Hypixel ➜ **`" + response.player.displayname + "`'s last login was @ `" + dateFromNum(hypixelLastDate)+ "`");
+							if (response.player.mostRecentGameType != undefined){
+								var gameName = returnGameName(response.player.mostRecentGameType);
+								msgHypixelArray.push("**Hypixel ➜ **" + "This was `" + ms(hypixelTimeDiffrence, { long: true }) + "` ago, playing `" + gameName + "`");
+							}
+							else {
+								msgHypixelArray.push("**Hypixel ➜ **" + "This was `" + ms(hypixelTimeDiffrence, { long: true }) + "` ago.");
+							}
+							bot.sendMessage(msg.channel, msgHypixelArray)
 						}
 						else {
-							bot.sendMessage(msg.channel, "**Hypixel:** " + "That user has never joined Hypixel!");
+							bot.sendMessage(msg.channel, "**Hypixel:** ➜ " + "That user has never joined Hypixel!");
 		//					bot.sendFile(msg.channel, "./images/aintfoundshit.gif");
 						}
 					}
 					})	
 				}
 				else {
-				bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel last <Username>");
+				bot.sendMessage(msg.channel, "**Hypixel ➜ ** ➜ " + "Usage : " + ConfigFile.command_prefix + "hypixel last <Username>");
 				}
 	}
-	if (suffix.substring(0,4) === "info"){
+	else if (suffix.substring(0,4) === "info"){
 		
 		var hyName = suffix.substring(5);
 		
@@ -1152,7 +1183,7 @@ var commands = {
 								
 								hyPrefix = response.player.prefix
 								
-								msgHypixelArray.push("**Hypixel** âžœ Info report for **" + hyPrefix.substring(2) + "** `" + response.player.displayname + "`");
+								msgHypixelArray.push("**Hypixel** ➜ Info report for **" + hyPrefix.substring(2) + "** `" + response.player.displayname + "`");
 								
 							}
 							else {
@@ -1161,7 +1192,7 @@ var commands = {
 								
 									hyPrefix = response.player.rank
 								
-									msgHypixelArray.push("**Hypixel** âžœ Info report for **[" + hyPrefix + "]** `" + response.player.displayname) + "`";
+									msgHypixelArray.push("**Hypixel** ➜ Info report for **[" + hyPrefix + "]** `" + response.player.displayname + "`");
 								
 								
 								}
@@ -1171,16 +1202,16 @@ var commands = {
 									if (response.player.newPackageRank != null) {
 										
 										if (response.player.newPackageRank === "MVP") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** `" + response.player.displayname + "`");																
+											msgHypixelArray.push("**Hypixel** ➜ Info report for **[MVP]** `" + response.player.displayname + "`");																
 										} 
 										if (response.player.newPackageRank === "MVP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** `" + response.player.displayname + "`");
+											msgHypixelArray.push("**Hypixel** ➜ Info report for **[MVP+]** `" + response.player.displayname + "`");
 										}
 										if (response.player.newPackageRank === "VIP") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** `" + response.player.displayname + "`");
+											msgHypixelArray.push("**Hypixel** ➜ Info report for **[VIP]** `" + response.player.displayname + "`");
 										} 
 										if (response.player.newPackageRank === "VIP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** `" + response.player.displayname + "`");											
+											msgHypixelArray.push("**Hypixel** ➜ Info report for **[VIP+]** `" + response.player.displayname + "`");											
 										}
 										
 										
@@ -1190,16 +1221,16 @@ var commands = {
 										if (response.player.packageRank != null) {
 									
 											if (response.player.packageRank === "MVP") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP]** `" + response.player.displayname + "`");																
+												msgHypixelArray.push("**Hypixel** ➜ Info report for **[MVP]** `" + response.player.displayname + "`");																
 											} 
 											if (response.player.packageRank === "MVP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[MVP+]** `" + response.player.displayname + "`");
+												msgHypixelArray.push("**Hypixel** ➜ Info report for **[MVP+]** `" + response.player.displayname + "`");
 											}
 											if (response.player.packageRank === "VIP") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP]** `" + response.player.displayname + "`");
+												msgHypixelArray.push("**Hypixel** ➜ Info report for **[VIP]** `" + response.player.displayname + "`");
 											} 
 											if (response.player.packageRank === "VIP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ Info report for **[VIP+]** `" + response.player.displayname + "`");											
+												msgHypixelArray.push("**Hypixel** ➜ Info report for **[VIP+]** `" + response.player.displayname + "`");											
 											} 
 											
 										
@@ -1207,7 +1238,7 @@ var commands = {
 										
 										else {
 											
-											msgHypixelArray.push("**Hypixel** âžœ Info report for `" + response.player.displayname + "`");
+											msgHypixelArray.push("**Hypixel** ➜ Info report for `" + response.player.displayname + "`");
 											
 										}
 										
@@ -1215,25 +1246,32 @@ var commands = {
 									}
 								}
 							}
+							
+							var hypixelLastDate = response.player.lastLogin							
+							var currentDate = Date.now()							
+							var hypixelTimeDiffrence = (currentDate - hypixelLastDate)
+							
 							msgHypixelArray.push("=//=========================//=");
 							msgHypixelArray.push("Last login was @ `" + dateFromNum(response.player.lastLogin)+ "` with the Minecraft version `" + response.player.mcVersionRp + "`");
-							if (response.player.mostRecentGameType != undefined){
-							msgHypixelArray.push("Last played game: `" + response.player.mostRecentGameType + "`"); }
+							msgHypixelArray.push("Last seen was `" + ms(hypixelTimeDiffrence, { long: true }) + "` ago." );
+							if (response.player.mostRecentGameType != undefined){								
+								var gameName = returnGameName(response.player.mostRecentGameType);
+								msgHypixelArray.push("Last played game: `" + gameName + "`"); 
+							}
 							msgHypixelArray.push("Network level is `" + (response.player.networkLevel + 1) + "` with total xp `" + response.player.networkExp + "` and total karma of `" + response.player.karma + "`");
-							msgHypixelArray.push("Total Hypixel Credits of `" + response.player.vanityTokens + "` (Its the cosmetics currency)");
+							if (response.player.achievements != null){
+								msgHypixelArray.push("Total Hypixel Credits of `" + response.player.vanityTokens + "` and total coins `" + response.player.achievements.general_coins + "`");
+							}
 							msgHypixelArray.push("First Login: `" + dateFromNum(response.player.firstLogin) + "`");
 							if (response.player.currentGadget != undefined){
 							msgHypixelArray.push("Currently equiped gadget: `" + response.player.currentGadget + "`"); }
 							msgHypixelArray.push("Hypixel Profile : https://hypixel.net/player/" + response.player.playername);
 							msgHypixelArray.push("Plancke Profile : http://plancke.nl/hypixel/stats/" + response.player.playername);
-//							if (response.player.voting.total != null){
-//							msgHypixelArray.push("Total number of votes: `" + response.player.voting.total + "`. Total today: `" + response.player.voting.votesToday + "/2`.");
-//							msgHypixelArray.push("Last time voted: `" + dateFromNum(response.player.voting.last_vote) + "`" ); }
 							
 							bot.sendMessage(msg.channel, msgHypixelArray)
 						}
 						else {
-							bot.sendMessage(msg.channel, "**Hypixel:** " + "That user has never joined Hypixel!");
+							bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "That user has never joined Hypixel!");
 						//    bot.sendFile(msg.channel, "./images/aintfoundshit.gif");
 						}
 					}
@@ -1241,10 +1279,10 @@ var commands = {
 		})
 		}
 		else {
-		bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel info <Username>");
+		bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "Usage : " + ConfigFile.command_prefix + "hypixel info <Username>");
 		}
 	}
-	if (suffix.substring(0,3) === "foo"){
+	else if (suffix.substring(0,3) === "foo"){
 					
 			getJSON('https://api.hypixel.net/key?key=' + ConfigFile.hypixel_api_key, function(error, response){
 
@@ -1258,15 +1296,15 @@ var commands = {
 						
 						if (response.success === true){
 							
-							bot.sendMessage(msg.channel, "**Hypixel:** Total number of queries for this key: `" + response.record.totalQueries + "`");
+							bot.sendMessage(msg.channel, "**Hypixel ➜ ** Total number of queries for this key: `" + response.record.totalQueries + "`");
 						}
 						else {
-							bot.sendMessage(msg.channel, "**Hypixel:** " + "Something went wrong on Hypixel's end. Result: " + response);
+							bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "Something went wrong on Hypixel's end. Result: " + response);
 						}
 					}
 					})	
 	}
-	if (suffix.substring(0,4) === "rank"){
+	else if (suffix.substring(0,4) === "rank"){
 		
 			var hyName = suffix.substring(5);
 		
@@ -1289,7 +1327,7 @@ var commands = {
 								
 								hyPrefix = response.player.prefix
 								
-								msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **" +  hyPrefix.substring(2) + "**");
+								msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **" +  hyPrefix.substring(2) + "**");
 								
 								bot.sendMessage(msg.channel, msgHypixelArray);
 								
@@ -1300,7 +1338,7 @@ var commands = {
 								
 									hyPrefix = response.player.rank
 								
-									msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[" +  hyPrefix + "]**");
+									msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[" +  hyPrefix + "]**");
 								
 									bot.sendMessage(msg.channel, msgHypixelArray);	
 								
@@ -1311,16 +1349,16 @@ var commands = {
 									if (response.player.newPackageRank != null) {
 										
 										if (response.player.newPackageRank === "MVP") {
-											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
+											msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
 										} 
 										if (response.player.newPackageRank === "MVP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
+											msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
 										}
 										if (response.player.newPackageRank === "VIP") {
-											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP]**");
+											msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[VIP]**");
 										} 
 										if (response.player.newPackageRank === "VIP_PLUS") {
-											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
+											msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
 										}
 										
 										bot.sendMessage(msg.channel, msgHypixelArray);
@@ -1331,16 +1369,16 @@ var commands = {
 										if (response.player.packageRank != null) {
 									
 											if (response.player.packageRank === "MVP") {
-												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
+												msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[MVP]**");																
 											} 
 											if (response.player.packageRank === "MVP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
+												msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[MVP+]**");
 											}
 											if (response.player.packageRank === "VIP") {
-												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP]**");
+												msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[VIP]**");
 											} 
 											if (response.player.packageRank === "VIP_PLUS") {
-												msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
+												msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "`'s Rank is **[VIP+]**");											
 											} 
 											
 											bot.sendMessage(msg.channel, msgHypixelArray);
@@ -1349,7 +1387,7 @@ var commands = {
 										
 										else {
 											
-											msgHypixelArray.push("**Hypixel** âžœ `" + response.player.displayname + "` does not have any rank.");
+											msgHypixelArray.push("**Hypixel** ➜ `" + response.player.displayname + "` does not have any rank.");
 											
 											bot.sendMessage(msg.channel, msgHypixelArray);
 											
@@ -1362,7 +1400,7 @@ var commands = {
 							
 						}
 						else {
-							msgHypixelArray.push("**Hypixel:** " + "Sorry! That player has never joined Hypixel before."); 
+							msgHypixelArray.push("**Hypixel ➜ ** " + " Username is incorrect, or they changed their name and havent joined Hypixel since.") 
 							
 							bot.sendMessage(msg.channel, msgHypixelArray);
 						}
@@ -1372,55 +1410,72 @@ var commands = {
 					})	
 			}
 			else {
-				bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel rank <Username>");
+				bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "Usage : " + ConfigFile.command_prefix + "hypixel rank <Username>");
 			}
 	}
-	
-	
-	else {
-//		bot.sendMessage(msg.channel, "**Hypixel:** " + "Usage : " + ConfigFile.command_prefix + "hypixel <somethingt3willformatthisbetterlater>"); 
-	}
-	 
-	}
-	 
-  },
-  "uuid": {
-    name: "uuid",
-    description: "Looks up the UUID of a Minecraft username.",
-    extendedhelp: "Looks up the UUID of a Minecraft username. Usage " + ConfigFile.command_prefix + "uuid <username>",
-    process: function(bot, msg, suffix) {    
-	
-	
-			if (suffix.length > 0) {
-          	
-	getJSON('https://api.mojang.com/users/profiles/minecraft/' + suffix, function(error, response){
- 
-			bot.sendMessage(msg.channel, response.result)
- 
-		if (response.id === "") {
-			bot.sendMessage(msg.channel, "butts")
-		}
-		else {
-			if(error) {
-				bot.sendMessage(msg.channel, error);
+	else if (suffix.substring(0,4) === "vote"){
+		
+			var hyName = suffix.substring(5);
+			var msgHypixelArray = [];
+		
+			if (hyName.length > 0) {
+				
+				getJSON('https://api.hypixel.net/player?key=' + ConfigFile.hypixel_api_key + '&name=' + hyName, function(error, response){
+					
+					if(error) {
+						bot.sendMessage(msg.channel, error);
+					}
+					
+					else {
+						
+						
+						if (response.success === true && response.player != null) {
+							
+							if (response.player.voting != null) {
+								
+								var hypixelLastDate = response.player.voting.last_vote							
+								var currentDate = Date.now()							
+								var hypixelTimeDiffrence = (currentDate - hypixelLastDate)
+								
+								msgHypixelArray.push("**Hypixel ➜ ** " + "`" + response.player.displayname + "` has voted a total of `" + response.player.voting.total + "` times.")
+								msgHypixelArray.push("**Hypixel ➜ ** " + "Has voted a total of `" + response.player.voting.votesToday + "/2` times today")
+								msgHypixelArray.push("**Hypixel ➜ ** " + "Last time voted was `" + dateFromNum(response.player.voting.last_vote) + "`")
+								msgHypixelArray.push("**Hypixel ➜ ** " + "This was `" + ms(hypixelTimeDiffrence, { long: true }) + "` ago." )
+								
+							}
+							else {
+								
+								msgHypixelArray.push("**Hypixel ➜ ** `" + response.player.displayname + "` has never voted before!")
+								
+							}
+							
+							
+							
+						}
+						else {
+							
+							msgHypixelArray.push("**Hypixel ➜ ** " + " Username is incorrect, or they changed their name and havent joined Hypixel since.")
+							
+						}
+						
+						bot.sendMessage(msg.channel, msgHypixelArray);
+					
+					}
+				})
+				
 			}
 			else {
-				
-				var minecraftUUID;
-				var minecraftNAME;
-				
-				minecraftUUID = response.id
-				minecraftNAME = response.name
-				bot.sendMessage(msg.channel, "The Minecraft UUID of **" + minecraftNAME + "** is `" + minecraftUUID + "`");
+				bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "Usage : " + ConfigFile.command_prefix + "hypixel vote <Username>");
 			}
-		}
-			})	
-		}
-        else {
-        bot.sendMessage(msg.channel, "Usage : " + ConfigFile.command_prefix + "uuid <Username>");
-		}
-	
-   }
+		
+		
+	}
+	else {
+		bot.sendMessage(msg.channel, "**Hypixel ➜ ** Usage `" + ConfigFile.command_prefix + "hypixel <rank/info/last/vote> <Username>`");
+	}
+
+	}
+	 
   },
   "wolfram": {
    name: "wolfram",

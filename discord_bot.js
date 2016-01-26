@@ -1156,7 +1156,7 @@ var commands = {
 					})	
 				}
 				else {
-				bot.sendMessage(msg.channel, "**Hypixel ➜ ** ➜ " + "Usage : " + ConfigFile.command_prefix + "hypixel last <Username>");
+				bot.sendMessage(msg.channel, "**Hypixel ➜ ** " + "Usage : " + ConfigFile.command_prefix + "hypixel last <Username>");
 				}
 	}
 	else if (suffix.substring(0,4) === "info"){
@@ -1477,6 +1477,44 @@ var commands = {
 	}
 	 
   },
+-  "uuid": {
+ -    name: "uuid",
+ -    description: "Looks up the UUID of a Minecraft username.",
+ -    extendedhelp: "Looks up the UUID of a Minecraft username. Usage " + ConfigFile.command_prefix + "uuid <username>",
+ -    process: function(bot, msg, suffix) {    
+ -	
+ -	
+ -			if (suffix.length > 0) {
+ -          	
+ -	getJSON('https://api.mojang.com/users/profiles/minecraft/' + suffix, function(error, response){
+ - 
+ -			bot.sendMessage(msg.channel, response.result)
+ - 
+ -		if (response.id === "") {
+ -			bot.sendMessage(msg.channel, "butts")
+ -		}
+ -		else {
+ -			if(error) {
+ -				bot.sendMessage(msg.channel, error);
+ -			}
+ -			else {
+ -				
+ -				var minecraftUUID;
+ -				var minecraftNAME;
+ -				
+ -				minecraftUUID = response.id
+ -				minecraftNAME = response.name
+ -				bot.sendMessage(msg.channel, "The Minecraft UUID of **" + minecraftNAME + "** is `" + minecraftUUID + "`");
+ -			}
+ -		}
+ -			})	
+ -		}
+ -        else {
+ -        bot.sendMessage(msg.channel, "Usage : " + ConfigFile.command_prefix + "uuid <Username>");
+ -		}
+ -	
+ -   }
+ -},
   "wolfram": {
    name: "wolfram",
    description: "Searches Wolfram Alpha.",
